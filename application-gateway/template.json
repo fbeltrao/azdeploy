@@ -118,7 +118,7 @@
                     {
                         "name": "appGatewayFrontendPort",
                         "properties": {
-                            "Port": 80
+                            "Port": "[parameters('frontEndPort')]"
                         }
                     }
                 ],
