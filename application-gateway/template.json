@@ -60,6 +60,11 @@
         "domainNameLabel": {
             "type": "string"
         },
+        "defaultApplicationURI": {
+            "type": "string",
+            "defaultValue": ""
+            
+        },
         "ruleType": {
             "type": "string",            
             "metadata": {
@@ -68,7 +73,7 @@
             "defaultValue": "PathBasedRouting"
         }
     },
-    "variables": {     
+    "variables": {             
         "publicIpAddressName": "[concat(parameters('applicationGatewayName'), 'pip')]",
         "virtualNetworkName": "[concat(parameters('applicationGatewayName'), 'vnet')]",
         "vnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
@@ -122,9 +127,13 @@
                 ],
                 "backendAddressPools": [
                     {
-                        "name": "appGatewayBackendPool",
+                        "name": "defaultBackendPool",
                         "properties": {
-                            "BackendAddresses": []
+                            "BackendAddresses": [
+                                {
+                                    "fqdn": "[parameters('defaultApplicationURI')]"
+                                }
+                            ] 
                         }
                     }
                 ],
@@ -150,7 +159,7 @@
                 ],
                 "backendHttpSettingsCollection": [
                     {
-                        "name": "appGatewayBackendHttpSettings",
+                        "name": "defaultBackendHttpSettings",
                         "properties": {
                             "Port": 80,
                             "Protocol": "Http",
@@ -184,10 +193,10 @@
                         "name": "defaultUrlMapPath",
                         "properties":{
                             "defaultBackendAddressPool": { 
-                                "id": "[concat(variables('applicationGatewayID'), '/backendAddressPools/appGatewayBackendPool')]"
+                                "id": "[concat(variables('applicationGatewayID'), '/backendAddressPools/defaultBackendPool')]"
                             },
                             "defaultBackendHttpSettings": {
-                                "id": "[concat(variables('applicationGatewayID'), '/backendHttpSettingsCollection/appGatewayBackendHttpSettings')]"
+                                "id": "[concat(variables('applicationGatewayID'), '/backendHttpSettingsCollection/defaultBackendHttpSettings')]"
                             },
                             "pathRules": [
                                 {
@@ -195,10 +204,10 @@
                                     "properties": {
                                         "paths": ["/*"],
                                         "backendAddressPool":{
-                                            "id": "[concat(variables('applicationGatewayID'), '/backendAddressPools/appGatewayBackendPool')]"
+                                            "id": "[concat(variables('applicationGatewayID'), '/backendAddressPools/defaultBackendPool')]"
                                         },
                                         "backendHttpSettings":{
-                                            "id": "[concat(variables('applicationGatewayID'), '/backendHttpSettingsCollection/appGatewayBackendHttpSettings')]"
+                                            "id": "[concat(variables('applicationGatewayID'), '/backendHttpSettingsCollection/defaultBackendHttpSettings')]"
                                         }
                                     }
                                 }
