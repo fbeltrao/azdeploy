@@ -10,7 +10,7 @@ This template will deploy an Application Gateway using by default a Path-based r
 
 To add web sites and url/routing to the application gateway use the provided PowerShell script
 
-### Adding a Azure web site
+### Adding an Azure web site
 
 ```powershell
 .\AddSiteRoute.ps1 -resourceGroupName MyResourceGroup -applicationGatewayName MyAppGateway -webSiteName "MyCustomersApi" -paths "/api/customers","/api/customers/*"
