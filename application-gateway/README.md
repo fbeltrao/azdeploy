@@ -1,5 +1,7 @@
 # Application Gateway
 
+![Application gateway with Web Sites](./media/application-gateway-overview.png)
+
 This template will deploy an Application Gateway using by default a Path-based routing instead of the "Basic" created by Azure Portal.
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Ffbeltrao%2Fazdeploy%2Fmaster%2Fapplication-gateway%2Ftemplate.json" target="_blank">
