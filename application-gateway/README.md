@@ -11,6 +11,7 @@ This template will deploy an Application Gateway using by default a Path-based r
 To add web sites and url/routing to the application gateway use the provided PowerShell script
 
 ### Adding a Azure web site
+
 ```powershell
 .\AddSiteRoute.ps1 -resourceGroupName MyResourceGroup -applicationGatewayName MyAppGateway -webSiteName "MyCustomersApi" -paths "/api/customers","/api/customers/*"
 ```
@@ -18,8 +19,16 @@ To add web sites and url/routing to the application gateway use the provided Pow
 This will route &lt;applicationGateway-ip-or-fqdns&gt;/api/customers to "MyCustomersApi.azurewebsites.net/api/customers"
 
 ### Adding an external web site
+
 ```powershell
 AddSiteRoute.ps1 -resourceGroupName MyResourceGroup -applicationGatewayName MyAppGateway -externalURI "thecatapi.com" -paths "/api/categories","/api/categories/*"
 ```
 
 This will route the &lt;applicationGateway-ip-or-fqdns&gt;/api/categories/list to http://thecatapi.com/api/categories/list
+
+### Defining where the path will be added
+The path rules will be solved in the order in which they are defined. To control where the path rule is added use the parameter "routePosition" with possible values
+
+- "first": will add in the top of the list (default behavior)
+- "last": will add to the end of the list
+- "secondLast": will add before the last element (in cases where the last element handles all missing cases)

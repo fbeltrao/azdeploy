@@ -34,7 +34,10 @@ param(
  [string] $webSiteName,
 
  [Parameter(Mandatory=$True)]
- [string[]] $paths
+ [string[]] $paths,
+
+ [ValidateSet("first","last","secondLast")]
+ [string] $routePosition = "first"
 )
 
 #******************************************************************************
@@ -80,7 +83,6 @@ else
 
     $backendPoolName = $safeNameFromExternalURI
     $backendPoolName += "BackendPool"
-
 }
 
 
@@ -98,8 +100,26 @@ $backendHttpSetting = $appGateway.BackendHttpSettingsCollection[0]
 # create path rule
 $pathRule = New-AzureRmApplicationGatewayPathRuleConfig -Name $ruleName -Paths $paths -BackendAddressPool $appGateway.BackendAddressPools[-1] -BackendHttpSettings $backendHttpSetting
 
-# insert the rule
-$appGateway.UrlPathMaps[0].PathRules = , $pathRule + $appGateway.UrlPathMaps[0].PathRules
+# add the rule based on $routeAddAction
+if ($routeAddAction -and $routeAddAction -eq "last")
+{
+    # insert at the start
+    $appGateway.UrlPathMaps[0].PathRules += $pathRule
+}
+elseif ($routeAddAction -and $routeAddAction -eq "secondLast")
+{
+    # insert at the start
+    $temp = $appGateway.UrlPathMaps[0].PathRules    
+    $appGateway.UrlPathMaps[0].PathRules = $temp[0..($temp.Length-1)],$pathRule,$temp[$temp.Length-1]     
+}
+else 
+{
+    # insert at the start
+    $appGateway.UrlPathMaps[0].PathRules = , $pathRule + $appGateway.UrlPathMaps[0].PathRules
+}
+
 
 # apply application gateway changes
-Set-AzureRmApplicationGateway -ApplicationGateway $appGateway
+Write-Host "Applying application gateway changes. It might take a while..." -NoNewline
+$appGateway = Set-AzureRmApplicationGateway -ApplicationGateway $appGateway
+Write-Host "done!"
