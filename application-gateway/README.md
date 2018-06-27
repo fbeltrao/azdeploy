@@ -3,7 +3,7 @@
 Application Gateway is a load balancer for web applications running on OSI layer 7, supporting HTTP, HTTPS, SSL termination, WebSocket and HTTP/2.  It supports routing based on URL paths. Moreover, it adds protection to web applications with web application firewall (WAF) which is based on OWASP rules.
 It is **not a complete reverse proxy solution**. It cannot transform requests (query strings, paths), modify backend based on client IPs or headers, among other features found in mature reverse proxy solutions.
 
-This pattern can be used in scenarios where all resources for an application  reside in the same domain (www.yourwebsite.com, www.yourwebsite.com/api, www.yourwebsite.com/images) but are deployed in different Azure web sites allowing you to decouple the application code (i.e. each api/xxx is a different ASP.NET core application, deployed separatadely).
+This pattern can be used in scenarios where all resources for an application  reside in the same domain (i.e. &lt;your-website&gt;, &lt;your-website&gt;/api, &lt;your-website&gt;/images) but are deployed in different Azure web sites allowing you to decouple the application code (i.e. each api/xxx is a different ASP.NET core application, deployed separately).
 
 ![Application gateway with Web Sites](./media/application-gateway-overview.png)
 
